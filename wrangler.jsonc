@@ -1,0 +1,6 @@
+{
+  "name": "dwarftinker",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "./", "not_found_handling": "404-page" },
+  "routes": [{ "pattern": "dwarftinker.com", "custom_domain": true }]
+}
