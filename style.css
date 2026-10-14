@@ -1,0 +1,243 @@
+:root {
+  --grey-900: #1f1f1f;
+  --grey-800: #2e2e2e;
+  --grey-700: #444444;
+  --grey-500: #777777;
+  --grey-300: #bdbdbd;
+  --grey-200: #dcdcdc;
+  --grey-100: #f2f2f2;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--grey-100);
+  color: var(--grey-800);
+  line-height: 1.6;
+  height: 100vh;
+  height: 100dvh; /* mobile: excludes the browser toolbar */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Home page: banner and globe side by side, stacked on tall screens */
+.hero {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+
+.banner {
+  display: block;
+  flex: 1 1 0;
+  min-width: 0;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+@container (orientation: portrait) {
+  .hero {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .banner {
+    flex: 0 1 auto;
+    width: 100%;
+    max-height: 35cqh;
+  }
+}
+
+/* Navigation */
+.nav {
+  background: var(--grey-800);
+  border-bottom: 3px solid var(--grey-500);
+}
+
+.nav ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav a {
+  display: block;
+  padding: 14px 22px;
+  color: var(--grey-200);
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  transition: background 0.2s, color 0.2s;
+}
+
+.nav a:hover,
+.nav a.active {
+  background: var(--grey-700);
+  color: var(--white);
+}
+
+/* Main content */
+.content {
+  flex: 1;
+  width: 100%;
+  max-width: 1200px;
+  margin: 24px auto;
+  padding: 24px;
+  background: var(--white);
+  border: 1px solid var(--grey-200);
+  border-radius: 6px;
+  /* Fill the space left between nav/banner and footer; the visualisation
+     inside sizes itself to whatever that space is (cqw/cqh units). */
+  min-height: 0;
+  container-type: size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Rotating globe — animated with a CSS transform so the browser's
+   compositor (GPU) does the work instead of a JavaScript timer loop. */
+.globe {
+  position: relative;
+  width: min(100cqw, 100cqh, 640px);
+  flex-shrink: 0;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 50%;
+  background: #000;
+  container-type: inline-size; /* lets the caption scale with the globe */
+}
+
+.globe-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+  animation: globe-spin 18s linear infinite;
+}
+
+@keyframes globe-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Night side: darkens the right half */
+.globe-night {
+  position: absolute;
+  inset: 0 0 0 50%;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.7));
+  pointer-events: none;
+}
+
+.globe-text {
+  position: absolute;
+  top: 18%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: "Lucida Console", Monaco, monospace;
+  font-size: 6cqw;
+  color: var(--white);
+  text-shadow: 0 0 2px #000, 0 2px 6px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+/* Planetary gears (about page) — built once by gears.js, spun by CSS */
+.gears {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+#gears {
+  display: block;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  max-width: 640px;
+}
+
+.gear {
+  stroke: var(--grey-900);
+  stroke-width: 1;
+  fill-rule: evenodd;
+}
+
+.gear-ring {
+  fill: var(--grey-200);
+}
+
+.gear-sun {
+  fill: var(--grey-500);
+}
+
+.gear-planet {
+  fill: var(--grey-300);
+}
+
+.gear-spin {
+  will-change: transform;
+  animation: globe-spin linear infinite;
+}
+
+.gears-caption {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  color: var(--grey-700);
+}
+
+/* Next to the banner the globe gets at most ~45% of the width */
+.hero .globe {
+  width: min(45cqw, 100cqh, 640px);
+}
+
+@container (orientation: portrait) {
+  .hero .globe {
+    width: min(100cqw, 55cqh, 640px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .globe-img,
+  .gear-spin {
+    animation: none;
+  }
+}
+
+/* Footer */
+.footer {
+  background: var(--grey-800);
+  color: var(--grey-300);
+  text-align: center;
+  padding: 16px;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 600px) {
+  .content {
+    margin: 12px;
+    width: auto;
+    padding: 16px;
+  }
+
+  .nav a {
+    padding: 12px 14px;
+  }
+}
