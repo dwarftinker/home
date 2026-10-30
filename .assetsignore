@@ -1,0 +1,6 @@
+# Files Cloudflare should not serve
+.git
+.idea
+.gitignore
+wrangler.jsonc
+*.md

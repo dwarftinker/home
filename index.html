@@ -4,26 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Isuru</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav class="nav">
     <ul>
-      <li><a href="index.html" class="active">Home</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="#">Projects</a></li>
-      <li><a href="#">Blog</a></li>
-      <li><a href="#">Contact</a></li>
+      <li><a href="index.html" class="active">
+        <svg class="nav-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M7 1h2v1h1v1h1v1h1v1h1v1h1v1h1v2h-2v6h-4v-4h-2v4h-4v-6h-2v-2h1v-1h1v-1h1v-1h1v-1h1v-1h1z"/></svg>
+        Home</a></li>
+      <li><a href="https://potha.dwarftinker.com">Potha</a></li>
+      <li class="nav-push"><a href="about.html">About</a></li>
     </ul>
   </nav>
 
-  <main class="content">
+  <main class="content content-full">
     <div class="hero">
-      <img class="banner" src="banner.png" alt="Site banner">
       <div class="globe">
         <img class="globe-img" src="globe.png" alt="Rotating illustrated globe">
-        <div class="globe-night"></div>
-        <p class="globe-text">LOVE WHERE YOU LIVE</p>
+        <div class="globe-label">
+          <img class="globe-dwarf" src="isuru_dwarf.png" alt="Pixel-art dwarf with a hammer">
+          <p class="globe-text">LOVE WHERE YOU LIVE</p>
+        </div>
       </div>
     </div>
   </main>

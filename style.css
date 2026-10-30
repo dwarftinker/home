@@ -16,47 +16,34 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: var(--grey-100);
-  color: var(--grey-800);
+  /* Retro fonts: VT323 (terminal) for text and the nav, Press Start 2P (8-bit game) for
+     headings. Both from Google Fonts, linked in each page. */
+  font-family: "VT323", "Courier New", monospace;
+  font-size: 1.25rem;
+  /*background: var(--grey-100);*/
+  /*color: var(--grey-800);*/
   line-height: 1.6;
   height: 100vh;
   height: 100dvh; /* mobile: excludes the browser toolbar */
   overflow: hidden;
   display: flex;
   flex-direction: column;
+
+    background-image: url("./background.png");
+    background-size: cover;
+    background-position: center bottom;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: #f5f7f4;
 }
 
-/* Home page: banner and globe side by side, stacked on tall screens */
+/* Home page: globe tucked into the bottom-right corner with only its
+   top-left quarter showing. */
 .hero {
+  position: relative;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 24px;
-}
-
-.banner {
-  display: block;
-  flex: 1 1 0;
-  min-width: 0;
-  max-height: 100%;
-  object-fit: contain;
-  border-radius: 4px;
-}
-
-@container (orientation: portrait) {
-  .hero {
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .banner {
-    flex: 0 1 auto;
-    width: 100%;
-    max-height: 35cqh;
-  }
+  overflow: hidden;
 }
 
 /* Navigation */
@@ -69,17 +56,32 @@ body {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+}
+
+/* Everything from this item on sits on the right */
+.nav .nav-push {
+  margin-left: auto;
 }
 
 .nav a {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   padding: 14px 22px;
   color: var(--grey-200);
   text-decoration: none;
-  font-weight: 500;
-  letter-spacing: 0.03em;
+  font-family: "VT323", "Courier New", monospace;
+  font-size: 1.5rem;
+  line-height: 1;
   transition: background 0.2s, color 0.2s;
+}
+
+/* Pixel-art icon: crisp square edges, drawn in the link's colour */
+.nav-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+  shape-rendering: crispEdges;
 }
 
 .nav a:hover,
@@ -98,7 +100,7 @@ body {
   background: var(--white);
   border: 1px solid var(--grey-200);
   border-radius: 6px;
-  /* Fill the space left between nav/banner and footer; the visualisation
+  /* Fill the space left between nav and footer; the visualisation
      inside sizes itself to whatever that space is (cqw/cqh units). */
   min-height: 0;
   container-type: size;
@@ -114,9 +116,6 @@ body {
   width: min(100cqw, 100cqh, 640px);
   flex-shrink: 0;
   aspect-ratio: 1 / 1;
-  overflow: hidden;
-  border-radius: 50%;
-  background: #000;
   container-type: inline-size; /* lets the caption scale with the globe */
 }
 
@@ -124,8 +123,9 @@ body {
   display: block;
   width: 100%;
   height: 100%;
+  filter: saturate(0.65) contrast(0.9) brightness(1.05); /* softer, muted colours */
   will-change: transform;
-  animation: globe-spin 18s linear infinite;
+  animation: globe-spin 72s linear infinite; /* 0.25x the original 18s */
 }
 
 @keyframes globe-spin {
@@ -134,43 +134,40 @@ body {
   }
 }
 
-/* Night side: darkens the right half */
-.globe-night {
-  position: absolute;
-  inset: 0 0 0 50%;
-  background: linear-gradient(to right, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.7));
-  pointer-events: none;
-}
-
 .globe-text {
   position: absolute;
   top: 18%;
   left: 0;
   right: 0;
   text-align: center;
-  font-family: "Lucida Console", Monaco, monospace;
-  font-size: 6cqw;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 3.6cqw;
   color: var(--white);
   text-shadow: 0 0 2px #000, 0 2px 6px rgba(0, 0, 0, 0.8);
   pointer-events: none;
 }
 
 /* Planetary gears (about page) — built once by gears.js, spun by CSS */
+/* Content area that runs edge to edge between nav and footer */
+.content.content-full {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent; /* let the body's background image show through */
+  position: relative;
+}
+
 .gears {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  position: absolute;
+  inset: 0;
 }
 
 #gears {
   display: block;
-  flex: 1;
-  min-height: 0;
   width: 100%;
-  max-width: 640px;
+  height: 100%;
 }
 
 .gear {
@@ -179,16 +176,25 @@ body {
   fill-rule: evenodd;
 }
 
+/* One muted hue per level: rings pale, suns deeper, smallest gears between */
+.gear-l0 { --hue: 15; }  /* terracotta */
+.gear-l1 { --hue: 40; }  /* ochre */
+.gear-l2 { --hue: 150; } /* sage */
+.gear-l3 { --hue: 205; } /* dusty blue */
+.gear-l4 { --hue: 280; } /* mauve */
+.gear-l5 { --hue: 340; } /* dusty rose */
+.gear-l6 { --hue: 95; }  /* olive */
+
 .gear-ring {
-  fill: var(--grey-200);
+  fill: hsl(var(--hue) 22% 82%);
 }
 
 .gear-sun {
-  fill: var(--grey-500);
+  fill: hsl(var(--hue) 22% 58%);
 }
 
 .gear-planet {
-  fill: var(--grey-300);
+  fill: hsl(var(--hue) 30% 68%);
 }
 
 .gear-spin {
@@ -197,21 +203,60 @@ body {
 }
 
 .gears-caption {
-  margin-top: 8px;
+  position: absolute;
+  right: 0;
+  bottom: 1px;
   display: flex;
   flex-direction: column;
-  color: var(--grey-700);
+  align-items: center;
+  padding: 3px 16px;
+  border-radius: 4px;
+  color: #7f3636;
+  white-space: nowrap;
 }
 
-/* Next to the banner the globe gets at most ~45% of the width */
+/* Home page globe: large and centred on the
+   bottom-right corner so only the top-left quarter is on screen */
 .hero .globe {
-  width: min(45cqw, 100cqh, 640px);
+  --globe-size: calc(1.3 * min(45cqw, 100cqh, 640px));
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: var(--globe-size);
+  transform: translate(50%, 50%);
 }
 
 @container (orientation: portrait) {
   .hero .globe {
-    width: min(100cqw, 55cqh, 640px);
+    --globe-size: calc(1.3 * min(100cqw, 55cqh, 640px));
   }
+}
+
+/* Keep the caption (dwarf above the text) on the visible quarter of the
+   planet (its radius is about 32% of the image), along the bottom edge of
+   the screen. Not inside the spinning image, so it stays upright. */
+.hero .globe-label {
+  position: absolute;
+  bottom: 50%;
+  right: 50%;
+  padding: 0 1% 1% 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.hero .globe-dwarf {
+  width: 15cqw;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.hero .globe-text {
+  position: static;
+  font-size: 1.3cqw;
+  line-height: 1.4;
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -226,8 +271,8 @@ body {
   background: var(--grey-800);
   color: var(--grey-300);
   text-align: center;
-  padding: 16px;
-  font-size: 0.9rem;
+  padding: 12px 16px;
+  font-size: 1.1rem;
 }
 
 @media (max-width: 600px) {
